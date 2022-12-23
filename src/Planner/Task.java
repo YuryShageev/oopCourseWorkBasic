@@ -34,7 +34,7 @@ public class Task {
     }
 
     public void setHeading(String heading) {
-        if (heading != null && !heading.isBlank() && !heading.isEmpty()) {
+        if (heading == null && heading.isBlank() && heading.isEmpty()) {
             throw new UnsupportedOperationException("Не все данные заполнены");
         } else {
             this.heading = heading;
