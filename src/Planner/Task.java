@@ -1,4 +1,4 @@
-package Diary;
+package Planner;
 
 import java.time.LocalDate;
 
@@ -34,7 +34,7 @@ public class Task {
     }
 
     public void setHeading(String heading) {
-        if (heading == null && heading.isBlank() && heading.isEmpty()) {
+        if (heading != null && !heading.isBlank() && !heading.isEmpty()) {
             throw new UnsupportedOperationException("Не все данные заполнены");
         } else {
             this.heading = heading;
@@ -47,7 +47,7 @@ public class Task {
     }
 
     public void setDescription(String description) {
-        if (description == null && description.isBlank() && description.isEmpty()) {
+        if (description != null && !description.isBlank() && !description.isEmpty()) {
             throw new UnsupportedOperationException("Не все данные заполнены");
         } else {
             this.description = description;
@@ -100,7 +100,7 @@ public class Task {
     //Validators
 
     public String validateLines(String value) {
-        if (value == null && value.isBlank() && value.isEmpty()) {
+        if (value != null && !value.isBlank() && !value.isEmpty()) {
             throw new UnsupportedOperationException("Не все данные заполнены");
         } else {
             return value;
