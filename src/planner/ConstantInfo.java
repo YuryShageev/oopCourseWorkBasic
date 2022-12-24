@@ -3,19 +3,19 @@ package planner;
 
 
 public enum ConstantInfo {
-    SINGLE(0),
-    DAILY(+1),
-    WEEKLY(+7),
-    MONTHLY(+30),
-    ANNUALLY(+365);
+    SINGLE("Один раз"),
+    DAILY("Ежедневно"),
+    WEEKLY("Еженедельно"),
+    MONTHLY("Раз в месяц"),
+    ANNUALLY("Раз в год");
 
-    private final int repeatIndex;
+    private final String repeatIndex;
 
-    ConstantInfo(int repeatIndex) {
+    ConstantInfo(String repeatIndex) {
         this.repeatIndex = repeatIndex;
     }
 
-    public int getRepeatIndex() {
+    public String getRepeatIndex() {
         return repeatIndex;
     }
 

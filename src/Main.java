@@ -28,11 +28,15 @@ public class Main {
                             break;
                         case 2:
                             service.removeTask(scanner);
-
                             break;
                         case 3:
                             service.obtainTask(scanner);
-
+                            break;
+                        case 4:
+                            service.obtainDeletedTask(scanner);
+                            break;
+                        case 5:
+                            service.editTask(scanner);
                             break;
                         case 0:
                             break label;

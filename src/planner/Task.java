@@ -15,6 +15,8 @@ public class Task {
     private static int counter;
     private final Integer id;
 
+    private boolean notFound;
+
     public Task(String heading, String description, String type, ConstantInfo repetition, LocalDate localDate) {
 
         this.heading = validateLines(heading);
@@ -23,6 +25,7 @@ public class Task {
         this.repetition = repetition;
         this.localDate = localDate;
         this.id = ++counter;
+        this.notFound = true;
     }
 
 
@@ -47,7 +50,7 @@ public class Task {
     }
 
     public void setDescription(String description) {
-        if (description != null && !description.isBlank() && !description.isEmpty()) {
+        if (description == null && description.isBlank() && description.isEmpty()) {
             throw new UnsupportedOperationException("Не все данные заполнены");
         } else {
             this.description = description;
@@ -70,6 +73,7 @@ public class Task {
     public Integer getId() {
         return id;
     }
+
 
     public String getType() {
         return type;
@@ -94,9 +98,15 @@ public class Task {
         } else {
             this.repetition = repetition;
         }
-
     }
 
+    public boolean isNotFound() {
+        return notFound;
+    }
+
+    public void setNotFound(boolean notFound) {
+        this.notFound = notFound;
+    }
     //Validators
 
     public String validateLines(String value) {

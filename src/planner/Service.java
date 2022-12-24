@@ -12,6 +12,7 @@ public class Service implements Methods {
         tasks = new HashMap<>();
     }
 
+
     //The method collector
     public void fillInTask(Scanner scanner) throws ServiceCheckException {
         try {
@@ -23,11 +24,6 @@ public class Service implements Methods {
             Task task = new Task(taskName, description, type, repetition, localDate);
             tasks.put(task.getId(), task);
             System.out.println(task);
-//        if (tasks.containsValue(task)) {
-//            System.out.println("Задача добавлена");
-//        } else {
-//            throw new RuntimeException("Задача не добавлена");
-//        }
         } catch (UnsupportedOperationException e) {
             System.out.println("Что-то не заполнили или заполнили не правильно");
         }
@@ -135,28 +131,35 @@ public class Service implements Methods {
                 1 + ". Добавить задачу " + "\n" +
                         2 + ". Удалить задачу  " + "\n" +
                         3 + ". Получить задачу на указанный день " + "\n" +
+                        4 + ". Получить удалённую задачу" + "\n" +
+                        5 + ". Редактировать задачу" + "\n" +
                         0 + ". Выход"
         );
     }
 
     //Методы для получения задачи
     public void obtainTask(Scanner scanner) {
-
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         System.out.println("Введите дату события в формате дд.мм.гггг: ");
         scanner.nextLine();
         String dateLine = scanner.nextLine();
-        LocalDate indicatedDate = LocalDate.parse(dateLine,dateTimeFormatter);
+        LocalDate indicatedDate = LocalDate.parse(dateLine, dateTimeFormatter);
         for (Map.Entry<Integer, Task> looper : tasks.entrySet()) {
-            Task currentTask = looper.getValue();
-            LocalDate taskDate = understandRepetition(currentTask, indicatedDate);
-            currentTask.setLocalDate(taskDate);
-            System.out.println(currentTask);
+            if (looper.getValue().isNotFound()) {
+                Task currentTask = looper.getValue();
+                LocalDate taskDate = understandRepetition(currentTask, indicatedDate);
+                currentTask.setLocalDate(taskDate);
+                System.out.println(currentTask);
+            } else {
+                System.out.println("Задача удалена или не была внесена");
+            }
         }
     }
 
     public static LocalDate understandRepetition(Task task, LocalDate date) {
         LocalDate gettingDate = LocalDate.now();
+
+
         if (task.getRepetition().equals(ConstantInfo.DAILY)) {
             if (task.getLocalDate().isBefore(date)) {
                 gettingDate = task.getLocalDate().plusDays(1);
@@ -199,12 +202,23 @@ public class Service implements Methods {
 
         if (task.getRepetition().equals(ConstantInfo.SINGLE)) {
             gettingDate = date;
-        }
 
+        }
         return gettingDate;
     }
 
+    //Методы получения удалённых задач
 
+    public void obtainDeletedTask(Scanner scanner) {
+        for (Map.Entry<Integer, Task> looper : tasks.entrySet()) {
+            if (!looper.getValue().isNotFound()) {
+                Task currentTask = looper.getValue();
+                System.out.println("deleted " + currentTask);
+            } else {
+                System.out.println("Задача удалена или не была внесена");
+            }
+        }
+    }
 
     //Методы удаления задачи
 
@@ -212,12 +226,36 @@ public class Service implements Methods {
         System.out.println("Введите номер задачи");
         Integer removeId = scanner.nextInt();
         for (Map.Entry<Integer, Task> looper : tasks.entrySet()) {
-            if (Objects.equals(looper.getKey(), removeId)) {
-                tasks.remove(looper.getKey());
+            if (Objects.equals(looper.getKey(), removeId) && looper.getValue().isNotFound()) {
+                looper.getValue().setNotFound(false);
+//                tasks.remove(looper.getKey()); // Оставил на всякий случай, чтобы подсматривать, когда забуду
+                System.out.println("Задача успешно удалена");
             } else {
                 System.out.println("Нечего удалять");
             }
         }
     }
+
+    //Методы редактирования задач
+
+    public void editTask(Scanner scanner) {
+        System.out.println("Введите номер задачи, которую хотите отредактировать: ");
+        int taskIdFinder = scanner.nextInt();
+        if (tasks.containsKey(taskIdFinder) && tasks.get(taskIdFinder).isNotFound()) {
+            System.out.println("Найдено: " + tasks.get(taskIdFinder));
+            System.out.println("Введите новое название");
+            String taskNewName = scanner.next();
+            System.out.println("Введите новое описание");
+            scanner.nextLine();
+            String taskNewDescription = scanner.nextLine();
+            tasks.get(taskIdFinder).setHeading(taskNewName);
+            tasks.get(taskIdFinder).setDescription(taskNewDescription);
+            System.out.println("Теперь ваша задача: ");
+            System.out.println(tasks.get(taskIdFinder));
+        } else {
+            System.out.println("Такой задачи не существует или она удалена!");
+        }
+    }
+
 }
 
