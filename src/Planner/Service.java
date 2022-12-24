@@ -101,13 +101,6 @@ public class Service implements Methods {
         scanner.nextLine();
         String dateLine = scanner.nextLine();
         LocalDate date = LocalDate.parse(dateLine, dateTimeFormatter);
-//        int year = scanner.nextInt();
-//        System.out.println("Введите номер месяца события: ");
-//        int month = scanner.nextInt();
-//        System.out.println("Введите дату события: ");
-//        int day = scanner.nextInt();
-//        System.out.println();
-//        LocalDate localDate = LocalDate.of(year, month, day);
         return date;
     }
 
@@ -128,13 +121,12 @@ public class Service implements Methods {
 
     //Методы для получения задачи
     public void obtainTask(Scanner scanner) {
-        System.out.println("Введите год события: ");
-        int year = scanner.nextInt();
-        System.out.println("Введите номер месяца события: ");
-        int month = scanner.nextInt();
-        System.out.println("Введите дату события: ");
-        int day = scanner.nextInt();
-        LocalDate indicatedDate = LocalDate.of(year, month, day);
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        System.out.println("Введите дату события в формате дд.мм.гггг: ");
+        scanner.nextLine();
+        String dateLine = scanner.nextLine();
+        LocalDate indicatedDate = LocalDate.parse(dateLine,dateTimeFormatter);
         for (Map.Entry<Integer, Task> looper : tasks.entrySet()) {
             Task currentTask = looper.getValue();
             LocalDate taskDate = understandRepetition(currentTask, indicatedDate);
