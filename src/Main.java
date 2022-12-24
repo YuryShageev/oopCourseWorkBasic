@@ -1,4 +1,5 @@
 import Planner.Service;
+import Planner.ServiceCheckException;
 
 import java.util.Scanner;
 
@@ -41,6 +42,8 @@ public class Main {
                     System.out.println("Выберите пункт меню из списка!");
                 }
             }
+        } catch (ServiceCheckException e) {
+            throw new RuntimeException(e);
         }
     }
 

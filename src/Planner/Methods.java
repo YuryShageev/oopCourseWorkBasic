@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public interface Methods{
 
-    public void fillInTask(Scanner scanner);
+    public void fillInTask(Scanner scanner) throws ServiceCheckException;
 
     public void obtainTask(Scanner scanner);
 

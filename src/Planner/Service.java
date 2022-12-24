@@ -13,19 +13,23 @@ public class Service implements Methods {
     }
 
     //The method collector
-    public void fillInTask(Scanner scanner) {
-        String taskName = inputTask(scanner);
-        String description = inputDescription(scanner);
-        String type = chooseType(scanner);
-        ConstantInfo repetition = setRepetition(scanner);
-        LocalDate localDate = inputDate(scanner);
-        Task task = new Task(taskName, description, type, repetition, localDate);
-        tasks.put(task.getId(), task);
-        System.out.println(task);
-        if (tasks.containsValue(task)) {
-            System.out.println("Задача добавлена");
-        } else {
-            throw new RuntimeException("Задача не добавлена");
+    public void fillInTask(Scanner scanner) throws ServiceCheckException {
+        try {
+            String taskName = inputTask(scanner);
+            String description = inputDescription(scanner);
+            String type = chooseType(scanner);
+            ConstantInfo repetition = setRepetition(scanner);
+            LocalDate localDate = inputDate(scanner);
+            Task task = new Task(taskName, description, type, repetition, localDate);
+            tasks.put(task.getId(), task);
+            System.out.println(task);
+//        if (tasks.containsValue(task)) {
+//            System.out.println("Задача добавлена");
+//        } else {
+//            throw new RuntimeException("Задача не добавлена");
+//        }
+        } catch (UnsupportedOperationException e) {
+            System.out.println("Что-то не заполнили или заполнили не правильно");
         }
     }
 
@@ -35,7 +39,11 @@ public class Service implements Methods {
     public static String inputTask(Scanner scanner) {
         System.out.print("Введите название задачи: ");
         String taskName = scanner.next();
-        return taskName;
+        if (taskName == null || taskName.isBlank() || taskName.isEmpty()) {
+            throw new UnsupportedOperationException("Не ввели название");
+        } else {
+            return taskName;
+        }
     }
 
 
@@ -43,7 +51,11 @@ public class Service implements Methods {
         System.out.println("Введите описание задачи: ");
         scanner.nextLine();
         String description = scanner.nextLine();
-        return description;
+        if (description == null || description.isBlank() || description.isEmpty()) {
+            throw new UnsupportedOperationException("Не ввели название");
+        } else {
+            return description;
+        }
     }
 
     public static String chooseType(Scanner scanner) {
@@ -54,17 +66,20 @@ public class Service implements Methods {
 
         printTypeMenu();
         System.out.println("Выберите тип задачи, личная или рабочая: ");
-
         int menu = scanner.nextInt();
-
-        switch (menu) {
-            case 1:
-                taskType = personalTask;
-                break;
-            case 2:
-                taskType = jobTask;
-                break;
+        if (menu == 1 || menu == 2) {
+            switch (menu) {
+                case 1:
+                    taskType = personalTask;
+                    break;
+                case 2:
+                    taskType = jobTask;
+                    break;
+            }
+        } else {
+            throw new UnsupportedOperationException("Укажите 1 или 2");
         }
+
 
         return taskType;
     }
@@ -74,22 +89,28 @@ public class Service implements Methods {
 
         System.out.println("Введите частоту повторения:\n SINGLE, \n DAILY, \n WEEKLY, \n MONTHLY, \n ANNUALLY");
         ConstantInfo constantInfo = ConstantInfo.valueOf(scanner.next());
-        switch (constantInfo) {
-            case SINGLE:
-                constantValue = ConstantInfo.SINGLE;
-                break;
-            case DAILY:
-                constantValue = ConstantInfo.DAILY;
-                break;
-            case WEEKLY:
-                constantValue = ConstantInfo.WEEKLY;
-                break;
-            case MONTHLY:
-                constantValue = ConstantInfo.MONTHLY;
-                break;
-            case ANNUALLY:
-                constantValue = ConstantInfo.ANNUALLY;
-                break;
+        if (constantInfo != null || constantInfo == ConstantInfo.SINGLE || constantInfo == ConstantInfo.DAILY ||
+                constantInfo == ConstantInfo.WEEKLY || constantInfo == ConstantInfo.MONTHLY || constantInfo == ConstantInfo.ANNUALLY) {
+            switch (constantInfo) {
+                case SINGLE:
+                    constantValue = ConstantInfo.SINGLE;
+                    break;
+                case DAILY:
+                    constantValue = ConstantInfo.DAILY;
+                    break;
+                case WEEKLY:
+                    constantValue = ConstantInfo.WEEKLY;
+                    break;
+                case MONTHLY:
+                    constantValue = ConstantInfo.MONTHLY;
+                    break;
+                case ANNUALLY:
+                    constantValue = ConstantInfo.ANNUALLY;
+                    break;
+            }
+        } else {
+            throw new UnsupportedOperationException("Внимательно введите частоту из списка: " +
+                    "\n SINGLE, \n DAILY, \n WEEKLY, \n MONTHLY, \n ANNUALLY");
         }
 
         return constantValue;
@@ -106,8 +127,7 @@ public class Service implements Methods {
 
     //Menus
     public static void printTypeMenu() {
-        System.out.println(1 + ". Личная; " + "\n" + 2 + ". Рабочая;" +
-                "\n" + 3 + ". Надоело кнопать");
+        System.out.println(1 + ". Личная; " + "\n" + 2 + ". Рабочая;");
     }
 
     public static void printMenu() {
