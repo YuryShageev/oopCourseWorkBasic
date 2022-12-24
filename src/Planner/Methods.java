@@ -4,14 +4,9 @@ import java.util.Scanner;
 
 public interface Methods{
 
-    ConstantInfo setRepetition(Scanner scanner);
+    public void fillInTask(Scanner scanner);
 
-    String inputTask(Scanner scanner);
+    public void obtainTask(Scanner scanner);
 
-    String inputDescription(Scanner scanner);
-
-    String chooseType(Scanner scanner);
-
-    void printTypeMenu();
-    void printMenu();
+    public void removeTask(Scanner scanner);
 }
