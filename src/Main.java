@@ -1,5 +1,5 @@
-import Planner.Service;
-import Planner.ServiceCheckException;
+import planner.Service;
+import planner.ServiceCheckException;
 
 import java.util.Scanner;
 
